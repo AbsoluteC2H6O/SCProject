@@ -1,0 +1,4 @@
+from maze_generators.DepthFirstMazeGenerator import DepthFirstMazeGenerator
+from maze_generators.KruskalMazeGenerator import KruskalMazeGenerator
+
+(DepthFirstMazeGenerator, KruskalMazeGenerator)

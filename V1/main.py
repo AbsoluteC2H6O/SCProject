@@ -3,7 +3,12 @@ import time
 import gym
 import gym_environments
 from agent import DoubleQLearning
+from gym.envs.registration import register
 
+register(
+    id="Blocks-v0",
+    entry_point="blocks.blocks:BlocksEnv"
+)
 
 def train(env, agent, episodes):
     for episode in range(episodes):

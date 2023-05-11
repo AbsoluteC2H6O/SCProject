@@ -1,8 +1,8 @@
 import sys
-import time
 import gym
 import gym_environments
-from agent import DoubleQLearning
+import numpy as np
+from agent import DYNAQ
 from gym.envs.registration import register
 
 register(
@@ -10,46 +10,42 @@ register(
     entry_point="blocks.blocks:BlocksEnv"
 )
 
-def train(env, agent, episodes):
+def run(env, agent: DYNAQ, selection_method, episodes):
     for episode in range(episodes):
-        print(episode)
+        if episode > 0:
+            print(f"Episode: {episode+1}")
         observation, _ = env.reset()
+        agent.start_episode()
         terminated, truncated = False, False
         while not (terminated or truncated):
-            action = agent.get_action(observation, "epsilon-greedy")
-            new_observation, reward, terminated, truncated, _ = env.step(action)
-            agent.update(observation, action, new_observation, reward, terminated)
-            observation = new_observation
-
-
-def play(env, agent):
-    observation, _ = env.reset()
-    terminated, truncated = False, False
-
-    env.render()
-    time.sleep(2)
-
-    while not (terminated or truncated):
-        action = agent.get_action(observation, "greedy")
-        new_observation, reward, terminated, truncated, _ = env.step(action)
-        agent.update(observation, action, new_observation, reward, terminated)
-        observation = new_observation
+            action = agent.get_action(observation, selection_method)
+            next_observation, reward, terminated, truncated, _ = env.step(action)
+            agent.update_q(observation, action, next_observation, reward)
+            agent.update_model(observation, action, reward, next_observation)
+            observation = next_observation
+        if selection_method == "epsilon-greedy":
+            for _ in range(100):
+                state = np.random.choice(list(agent.visited_states.keys()))
+                action = np.random.choice(agent.visited_states[state])
+                reward, next_state = agent.model[(state, action)]
+                agent.update_q(state, action, next_state, reward)
 
 
 if __name__ == "__main__":
-    environments = ["CliffWalking-v0", "Taxi-v3", "Princess-v0", "Blocks-v0"]
-    id = 3 if len(sys.argv) < 2 else int(sys.argv[1])
-    episodes = 10 if len(sys.argv) < 3 else int(sys.argv[2])
+    environments = "Blocks-v0"
+    episodes = 1000 if len(sys.argv) < 3 else int(sys.argv[2])
 
-    env = gym.make(environments[id])
-    agent = DoubleQLearning(
-        env.observation_space.n, env.action_space.n, alpha=0.1, gamma=0.9, epsilon=0.5
+    env = gym.make(environments)
+    agent = DYNAQ(
+        env.observation_space.n, env.action_space.n, alpha=1, gamma=0.95, epsilon=0.1
     )
 
-    train(env, agent, episodes)
-    agent.render()
+    # Train
+    run(env, agent, "epsilon-greedy", episodes)
     env.close()
 
-    env = gym.make(environments[id], render_mode="human")
-    play(env, agent)
+    # Play
+    env = gym.make(environments, render_mode="human")
+    run(env, agent, "greedy", 1)
+    agent.render()
     env.close()

@@ -66,13 +66,13 @@ class Scene:
             row, col = int(row), int(col)
             x, y = TileMap.to_screen(row, col)
             self.bomb1 = Bomb(x, y, self)
-            self.tile_map.tiles[row][col].busy = True
+            self.tile_map.tiles[row][col].busy = False
 
             row, col = f.readline().split(" ")
             row, col = int(row), int(col)
             x, y = TileMap.to_screen(row, col)
             self.bomb2 = Bomb(x, y, self)
-            self.tile_map.tiles[row][col].busy = True
+            self.tile_map.tiles[row][col].busy = False
 
 
     def reset(self):
@@ -128,7 +128,43 @@ class Scene:
     def check_win(self):
         b1 = TileMap.to_map(self.box1.x, self.box1.y)
         b2 = TileMap.to_map(self.box2.x, self.box2.y)
-        return self.target in (b1, b2)
+
+        win = self.target in (b1, b2)
+        if(win):
+            print('YOU WIN, you are the best!')
+
+        return win
+    
+    def check_loses(self):
+        bomb1 = TileMap.to_map(self.bomb1.x, self.bomb1.y)
+        bomb2 = TileMap.to_map(self.bomb2.x, self.bomb2.y)
+        characeter = TileMap.to_map(self.character.x, self.character.y)
+        
+        bomb1Explodes = characeter == bomb1
+        bomb2Explodes = characeter == bomb2
+        explosion = bomb1Explodes or bomb2Explodes
+        
+        if(bomb1Explodes):
+            self.bomb1.explosion()
+        if(bomb2Explodes):
+            self.bomb2.explosion()
+
+        if(explosion):
+            self.character.life_points-=50
+
+        isDead = self.character.life_points == 0
+
+        if(explosion):
+            print('explosion', explosion, 'isDead', isDead)
+            print('life points', self.character.life_points)
+
+        
+        if(explosion and isDead):
+            print("GAME OVER, your life points was reduced to cero!")
+            return True
+        else:
+            return False
+        
 
     def render(self, surface):
         self.tile_map.render(surface)

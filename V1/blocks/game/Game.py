@@ -27,8 +27,12 @@ class Game:
 
     def update(self, action):
         new_state = self.scene.apply_action(action)
+        loses = self.scene.check_loses()
         win = self.scene.check_win()
-        return new_state, win
+        if(loses):
+            return new_state, loses
+        else:
+            return new_state, win
 
     def render(self):
         if self.render_mode is None:

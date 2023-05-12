@@ -17,6 +17,7 @@ GAME_TEXTURES = {
     "ice": pygame.image.load(BASE_DIR / "graphics" / "ice.png"),
     "snow": pygame.image.load(BASE_DIR / "graphics" / "snow.png"),
     "box": pygame.image.load(BASE_DIR / "graphics" / "box.png"),
+    "bomb": pygame.image.load(BASE_DIR / "graphics" / "explosion.png"),
     "character": pygame.image.load(BASE_DIR / "graphics" / "character.png"),
     "switch": pygame.image.load(BASE_DIR / "graphics" / "switch.png"),
 }
@@ -26,6 +27,7 @@ GAME_FRAMES = {
     "ice": [pygame.Rect(0, 0, TILE_SIZE, TILE_SIZE)],
     "snow": [pygame.Rect(0, 0, TILE_SIZE, TILE_SIZE)],
     "box": [pygame.Rect(0, 0, TILE_SIZE, TILE_SIZE)],
+    "bomb": [pygame.Rect(0, 0, TILE_SIZE, TILE_SIZE)],
     "character": generate_frames(
         GAME_TEXTURES["character"], PLAYER_WIDTH, PLAYER_HEIGHT
     ),

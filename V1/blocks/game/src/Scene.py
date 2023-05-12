@@ -3,7 +3,7 @@ from .. import settings
 from .Box import Box
 from .Character import Character
 from .Tilemap import Tile, TileMap, TILE_TEXTURE_DEF
-
+from .Bomb import Bomb
 
 class Scene:
     def __init__(self):
@@ -11,6 +11,8 @@ class Scene:
         self.character = None
         self.box1 = None
         self.box2 = None
+        self.bomb1 = None
+        self.bomb2 = None
         self.target = None
         self.__load_environment()
 
@@ -60,11 +62,26 @@ class Scene:
             row, col = f.readline().split(" ")
             self.target = int(row), int(col)
 
+            row, col = f.readline().split(" ")
+            row, col = int(row), int(col)
+            x, y = TileMap.to_screen(row, col)
+            self.bomb1 = Bomb(x, y, self)
+            self.tile_map.tiles[row][col].busy = True
+
+            row, col = f.readline().split(" ")
+            row, col = int(row), int(col)
+            x, y = TileMap.to_screen(row, col)
+            self.bomb2 = Bomb(x, y, self)
+            self.tile_map.tiles[row][col].busy = True
+
+
     def reset(self):
         self.tile_map = None
         self.character = None
         self.box1 = None
         self.box2 = None
+        self.bomb1 = None
+        self.bomb2 = None
         self.target = None
         self.__load_environment()
         return self.get_state()
@@ -118,4 +135,6 @@ class Scene:
         surface.blit(settings.GAME_TEXTURES["switch"], TileMap.to_screen(*self.target))
         self.box1.render(surface)
         self.box2.render(surface)
+        self.bomb1.render(surface)
+        self.bomb2.render(surface)
         self.character.render(surface)

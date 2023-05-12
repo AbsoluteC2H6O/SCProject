@@ -15,6 +15,7 @@ class Character(Entity):
         )
         self.direction = 3
         self.frames_map = [10, 7, 4, 1]
+        self.life_points = 100
 
     def move(self):
         self.frame_index = self.frames_map[self.direction]
@@ -50,6 +51,9 @@ class Character(Entity):
         self.off_set_i = 1
         self.off_set_j = 0
         self.move()
+    
+    def get_explosion(self):
+        self.life_points -= 50
 
     def render(self, surface):
         texture = settings.GAME_TEXTURES[self.texture_name]

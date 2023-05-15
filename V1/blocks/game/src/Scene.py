@@ -13,6 +13,8 @@ class Scene:
         self.box2 = None
         self.bomb1 = None
         self.bomb2 = None
+        self.bomb1IsExploded = False
+        self.bomb2IsExploded = False
         self.target = None
         self.__load_environment()
 
@@ -140,17 +142,25 @@ class Scene:
         bomb2 = TileMap.to_map(self.bomb2.x, self.bomb2.y)
         characeter = TileMap.to_map(self.character.x, self.character.y)
         
-        bomb1Explodes = characeter == bomb1
-        bomb2Explodes = characeter == bomb2
+        bomb1Explodes = characeter == bomb1 and self.bomb1IsExploded == False
+        bomb2Explodes = characeter == bomb2 and self.bomb2IsExploded == False
         explosion = bomb1Explodes or bomb2Explodes
+
+        if(self.bomb1.isExploded):
+            self.bomb1.delete_explosion()
+
+        if(self.bomb2.isExploded):
+            self.bomb2.delete_explosion()
         
         if(bomb1Explodes):
+            self.bomb1IsExploded = True
             self.bomb1.explosion()
         if(bomb2Explodes):
+            self.bomb2IsExploded = True
             self.bomb2.explosion()
 
         if(explosion):
-            self.character.life_points-=50
+            self.character.get_explosion()
 
         isDead = self.character.life_points == 0
 

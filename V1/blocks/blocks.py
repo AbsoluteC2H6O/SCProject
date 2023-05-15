@@ -18,7 +18,8 @@ class BlocksEnv(gym.Env):
         self.n = self.game.scene.tile_map.rows * self.game.scene.tile_map.cols
         self.num_directions = 4
         self.observation_space = spaces.Discrete(
-            self.n * (self.n - 1) * (self.n - 2) * self.num_directions
+            self.n * (self.n - 1) * (self.n - 2) * self.num_directions 
+            # + self.n-3*(self.n-4)
         )
         self.action_space = spaces.Discrete(5)
         self.current_state = self.game.get_state()
@@ -62,6 +63,14 @@ class BlocksEnv(gym.Env):
             self.current_reward = -10.0
         elif terminated:
             self.current_reward = 0
+
+        # 1 Bomb was exploded
+        if(self.game.scene.character.life_points == 50):
+            self.current_reward = -30
+
+        # 2 Bombs were exploded and the games is over
+        if(self.game.scene.character.life_points == 50):
+            self.current_reward = -100
 
         if self.render_mode is not None:
             self.render()

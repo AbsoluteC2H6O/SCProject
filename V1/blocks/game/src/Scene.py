@@ -116,6 +116,8 @@ class Scene:
         self.character.move_down(action)
 
     def push(self, action):
+        bomb1x, bomb1y = TileMap.to_map(self.bomb1.x, self.bomb1.y)
+        bomb2x, bomb2y = TileMap.to_map(self.bomb2.x, self.bomb2.y)
         mc_i, mc_j = TileMap.to_map(self.character.x, self.character.y)
         os_i, os_j = self.push_directions[self.character.direction]
         push_target = mc_i + os_i, mc_j + os_j
@@ -123,9 +125,9 @@ class Scene:
         b2_t = TileMap.to_map(self.box2.x, self.box2.y)
 
         if push_target == b1_t:
-            self.box1.push(os_i, os_j)
+            self.box1.push(os_i, os_j, bomb1x, bomb1y, bomb2x,bomb2y)
         elif push_target == b2_t:
-            self.box2.push(os_i, os_j)
+            self.box2.push(os_i, os_j, bomb1x,bomb1y, bomb2x, bomb2y)
 
     def check_win(self):
         b1 = TileMap.to_map(self.box1.x, self.box1.y)
@@ -144,6 +146,7 @@ class Scene:
         
         bomb1Explodes = characeter == bomb1 and self.bomb1IsExploded == False
         bomb2Explodes = characeter == bomb2 and self.bomb2IsExploded == False
+
         explosion = bomb1Explodes or bomb2Explodes
 
         if(self.bomb1.isExploded):
@@ -164,9 +167,9 @@ class Scene:
 
         isDead = self.character.life_points == 0
 
-        if(explosion):
-            print('explosion', explosion, 'isDead', isDead)
-            print('life points', self.character.life_points)
+        # if(explosion):
+            # print('explosion', explosion, 'isDead', isDead)
+            # print('life points', self.character.life_points)
 
         
         if(explosion and isDead):

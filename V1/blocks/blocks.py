@@ -18,8 +18,7 @@ class BlocksEnv(gym.Env):
         self.n = self.game.scene.tile_map.rows * self.game.scene.tile_map.cols
         self.num_directions = 4
         self.observation_space = spaces.Discrete(
-            self.n * (self.n - 1) * (self.n - 2) * self.num_directions 
-            # + self.n-3*(self.n-4)
+            self.n * (self.n - 1) * (self.n - 2) * self.num_directions + 3
         )
         self.action_space = spaces.Discrete(5)
         self.current_state = self.game.get_state()
@@ -28,11 +27,17 @@ class BlocksEnv(gym.Env):
         self.delay = 1
 
     def __compute_state_result(self, d, mc, s1, s2):
+        bombPoints = 0
+        if(self.game.scene.character.life_points == 50):
+            bombPoints = 1
+        elif(self.game.scene.character.life_points == 0):
+            bombPoints = 2
+            
         return (
             d * self.n * (self.n - 1) * (self.n - 2)
             + mc * (self.n - 1) * (self.n - 2)
             + s1 * (self.n - 2)
-            + s2
+            + s2 + bombPoints
         )
 
     def reset(self, seed=None, options=None):

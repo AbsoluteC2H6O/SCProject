@@ -24,16 +24,20 @@ def run(env, agent: DYNAQ, selection_method, episodes):
             agent.update_model(observation, action, reward, next_observation)
             observation = next_observation
         if selection_method == "epsilon-greedy":
+            rewardTotal = 0
             for _ in range(100):
                 state = np.random.choice(list(agent.visited_states.keys()))
                 action = np.random.choice(agent.visited_states[state])
                 reward, next_state = agent.model[(state, action)]
                 agent.update_q(state, action, next_state, reward)
+                rewardTotal = reward
+            print('reward', rewardTotal)
+
 
 
 if __name__ == "__main__":
     environments = "Blocks-v0"
-    episodes = 200 if len(sys.argv) < 3 else int(sys.argv[2])
+    episodes = 1500 if len(sys.argv) < 3 else int(sys.argv[2])
 
     env = gym.make(environments)
     agent = DYNAQ(

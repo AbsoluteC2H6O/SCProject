@@ -18,7 +18,8 @@ class BlocksEnv(gym.Env):
         self.n = self.game.scene.tile_map.rows * self.game.scene.tile_map.cols
         self.num_directions = 4
         self.observation_space = spaces.Discrete(
-            self.n * (self.n - 1) * (self.n - 2) * self.num_directions + 3
+            self.n * (self.n - 1) * (self.n - 2) * self.num_directions 
+            # + 3
         )
         self.action_space = spaces.Discrete(5)
         self.current_state = self.game.get_state()
@@ -37,7 +38,8 @@ class BlocksEnv(gym.Env):
             d * self.n * (self.n - 1) * (self.n - 2)
             + mc * (self.n - 1) * (self.n - 2)
             + s1 * (self.n - 2)
-            + s2 + bombPoints
+            + s2 
+            # + bombPoints
         )
 
     def reset(self, seed=None, options=None):
@@ -69,12 +71,14 @@ class BlocksEnv(gym.Env):
         elif terminated:
             self.current_reward = 0
 
-        # 1 Bomb was exploded
+        # if(self.game.scene.check_win):
+        #     self.current_reward = 1000
+        # # 1 Bomb was exploded
         if(self.game.scene.character.life_points == 50):
             self.current_reward = -30
 
         # 2 Bombs were exploded and the games is over
-        if(self.game.scene.character.life_points == 50):
+        if(self.game.scene.character.life_points == 0):
             self.current_reward = -100
 
         if self.render_mode is not None:

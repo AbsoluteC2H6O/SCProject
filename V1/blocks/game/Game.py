@@ -30,6 +30,7 @@ class Game:
         loses = self.scene.check_loses()
         win = self.scene.check_win()
         if(loses):
+            print('YOU LOST: Better luck in the next time!')
             return new_state, loses
         else:
             return new_state, win

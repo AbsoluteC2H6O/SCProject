@@ -134,7 +134,7 @@ class Scene:
         b2 = TileMap.to_map(self.box2.x, self.box2.y)
 
         win = self.target in (b1, b2)
-        if(win):
+        if(win == True):
             print('YOU WIN, you are the best!')
 
         return win
@@ -187,3 +187,37 @@ class Scene:
         self.bomb1.render(surface)
         self.bomb2.render(surface)
         self.character.render(surface)
+
+        # Texto del Pirata
+        for _ in range(9):
+            surface.blit(
+                settings.GAME_TEXTURES['ice'],
+                (_*16,
+                    144)
+            )
+        font = settings.FONTS['short']
+        text_obj = font.render(f"{settings.LIFE_POINTS}", True, (0, 0, 0))
+        text_rect = text_obj.get_rect()
+        text_rect.center = (25, 150)
+        surface.blit(text_obj, text_rect)
+
+        font = settings.FONTS['short']
+        text_obj = font.render(f"{self.character.life_points}", True, (0, 0, 0))
+        text_rect = text_obj.get_rect()
+        text_rect.center = (60, 150)
+        surface.blit(text_obj, text_rect)
+
+        # Texto del Pirata
+        for _ in range(9):
+            surface.blit(
+                settings.GAME_TEXTURES['ice'],
+                (_*16,
+                    160)
+            )
+        
+        # Texto del copy
+        font = settings.FONTS['short-1']
+        text_obj = font.render(f"{settings.COPY}", True, (0, 0, 0))
+        text_rect = text_obj.get_rect()
+        text_rect.center = (60, 165)
+        surface.blit(text_obj, text_rect)

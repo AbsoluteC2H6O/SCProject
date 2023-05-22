@@ -21,7 +21,7 @@ class TileMap:
         self.map = [[None for _ in range(cols)] for _ in range(rows)]
         self.tiles = [[None for _ in range(cols)] for _ in range(rows)]
         self.width = cols * settings.TILE_SIZE
-        self.height = rows * settings.TILE_SIZE
+        self.height = rows * settings.TILE_SIZE + 32
 
     @staticmethod
     def to_map(x, y):

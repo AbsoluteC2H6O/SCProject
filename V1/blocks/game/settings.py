@@ -34,3 +34,14 @@ GAME_FRAMES = {
         GAME_TEXTURES["character"], PLAYER_WIDTH, PLAYER_HEIGHT
     ),
 }
+# Fonts
+pygame.font.init()
+FONTS = {
+    'large': pygame.font.Font(BASE_DIR / "fonts" / "Bangers-Regular.ttf", 14),
+    'short': pygame.font.Font(BASE_DIR / "fonts" / "Bangers-Regular.ttf", 12),
+    'short-1': pygame.font.Font(BASE_DIR  / "fonts" / "Bangers-Regular.ttf", 10)
+}
+
+COPY = "The Pirate Treasure - By: Abe & Alfredo"
+LIFE_POINTS = "Life points:"
+LOST = "¡LOST GAME!"

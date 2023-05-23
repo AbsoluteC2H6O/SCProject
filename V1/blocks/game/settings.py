@@ -34,8 +34,10 @@ GAME_FRAMES = {
         GAME_TEXTURES["character"], PLAYER_WIDTH, PLAYER_HEIGHT
     ),
 }
+
 # Fonts
 pygame.font.init()
+
 FONTS = {
     'large': pygame.font.Font(BASE_DIR / "fonts" / "Bangers-Regular.ttf", 14),
     'short': pygame.font.Font(BASE_DIR / "fonts" / "Bangers-Regular.ttf", 12),
@@ -45,3 +47,16 @@ FONTS = {
 COPY = "The Pirate Treasure - By: Abe & Alfredo"
 LIFE_POINTS = "Life points:"
 LOST = "¡LOST GAME!"
+
+# Initializing the mixer
+pygame.mixer.init()
+
+# Loading music
+pygame.mixer.music.load(BASE_DIR / "sound" / "pirates.ogg")
+
+# Sound effects
+SOUNDS = {
+    'explosion': pygame.mixer.Sound(BASE_DIR / "sound" / "explosion.ogg"),
+    'lose': pygame.mixer.Sound(BASE_DIR / "sound" / "lose.ogg"),
+    'win': pygame.mixer.Sound(BASE_DIR / "sound" / "win.ogg"),
+}

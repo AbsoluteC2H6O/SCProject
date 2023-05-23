@@ -1,7 +1,7 @@
 import pygame
-
+from . import settings
 from .src.Scene import Scene
-
+import time
 
 class Game:
     def __init__(self, title, render_mode):
@@ -12,7 +12,7 @@ class Game:
         if self.render_mode is not None:
             pygame.init()
             pygame.display.init()
-
+            pygame.mixer.music.play(loops=-1)
             w, h = self.scene.tile_map.width, self.scene.tile_map.height
 
             self.render_surface = pygame.Surface((w, h))
@@ -31,8 +31,15 @@ class Game:
         win = self.scene.check_win()
         if(loses):
             print('YOU LOST: Better luck in the next time!')
+            settings.SOUNDS['lose'].play()
+            # time.sleep(4)
+            # time.sleep(8)
+            #self.soundClose()
             return new_state, loses
         else:
+            settings.SOUNDS['win'].play()
+            # time.sleep(8)
+            #self.soundClose()
             return new_state, win
 
     def render(self):
@@ -53,6 +60,11 @@ class Game:
     def close(self):
         if self.render_mode is None:
             return
-
+        
         pygame.display.quit()
         pygame.quit()
+
+    def soundClose(self):
+        time.sleep(4)
+        pygame.mixer.music.stop()
+        pygame.mixer.quit()

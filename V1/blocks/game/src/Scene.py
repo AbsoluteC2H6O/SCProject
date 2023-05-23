@@ -136,7 +136,6 @@ class Scene:
         win = self.target in (b1, b2)
         if(win == True):
             print('YOU WIN, you are the best!')
-
         return win
     
     def check_loses(self):
@@ -158,9 +157,11 @@ class Scene:
         if(bomb1Explodes):
             self.bomb1IsExploded = True
             self.bomb1.explosion()
+            settings.SOUNDS['explosion'].play()
         if(bomb2Explodes):
             self.bomb2IsExploded = True
             self.bomb2.explosion()
+            settings.SOUNDS['explosion'].play()
 
         if(explosion):
             self.character.get_explosion()
@@ -171,7 +172,6 @@ class Scene:
             # print('explosion', explosion, 'isDead', isDead)
             # print('life points', self.character.life_points)
 
-        
         if(explosion and isDead):
             print("GAME OVER, your life points was reduced to cero!")
             return True

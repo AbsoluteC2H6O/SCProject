@@ -32,14 +32,20 @@ class Game:
         win = self.scene.check_win()
         if(loses):
             print('YOU LOST: Better luck in the next time!')
-            # settings.SOUNDS['lose'].play()
+            settings.SOUNDS['lose'].play()
+            # time.sleep(4)
             # time.sleep(8)
+            #self.soundClose()
             return new_state, loses
-        else:
-            # settings.SOUNDS['win'].play()
-            # time.sleep(8)
+        if(win):
+            print('entro aqui')
+            settings.SOUNDS['win'].play()
+            # time.sleep(2)
+            #self.soundClose()
             return new_state, win
-
+        else:
+            return new_state, win
+        
     def render(self):
         if self.render_mode is None:
             return
@@ -61,5 +67,5 @@ class Game:
         
         pygame.display.quit()
         pygame.mixer.music.stop()
-        pygame.mixer.quit()
-        pygame.quit()
+        # pygame.mixer.quit()
+        # pygame.quit()

@@ -4,11 +4,16 @@ import gym_environments
 import numpy as np
 from agent import DYNAQ
 from gym.envs.registration import register
+import os
 
 register(
     id="Blocks-v0",
     entry_point="blocks.blocks:BlocksEnv"
 )
+
+# Allowing environment to have sounds
+if "SDL_AUDIODRIVER" in os.environ:
+    del os.environ["SDL_AUDIODRIVER"]
 
 def run(env, agent: DYNAQ, selection_method, episodes):
     for episode in range(episodes):

@@ -188,36 +188,54 @@ class Scene:
         self.bomb2.render(surface)
         self.character.render(surface)
 
-        # Texto del Pirata
+        # Fondo del texto
         for _ in range(9):
             surface.blit(
                 settings.GAME_TEXTURES['ice'],
                 (_*16,
                     144)
             )
-        font = settings.FONTS['short']
-        text_obj = font.render(f"{settings.LIFE_POINTS}", True, (0, 0, 0))
-        text_rect = text_obj.get_rect()
-        text_rect.center = (25, 150)
-        surface.blit(text_obj, text_rect)
-
-        font = settings.FONTS['short']
-        text_obj = font.render(f"{self.character.life_points}", True, (0, 0, 0))
-        text_rect = text_obj.get_rect()
-        text_rect.center = (60, 150)
-        surface.blit(text_obj, text_rect)
-
-        # Texto del Pirata
         for _ in range(9):
             surface.blit(
                 settings.GAME_TEXTURES['ice'],
                 (_*16,
                     160)
             )
+
+        # Texto Life points
+        font = settings.FONTS['short']
+        text_obj = font.render(f"{settings.LIFE_POINTS}", True, (0, 0, 0))
+        text_rect = text_obj.get_rect()
+        text_rect.center = (64, 152)
+        surface.blit(text_obj, text_rect)
+
+        # Renderizado de la vida del pirata
+        if(self.character.life_points > 50):
+            # font = settings.FONTS['short']
+            # text_obj = font.render(f"{self.character.life_points}", True, (0, 0, 0))
+            # text_rect = text_obj.get_rect()
+            # text_rect.center = (60, 150)
+            # surface.blit(text_obj, text_rect)
+            surface.blit(
+                settings.GAME_TEXTURES['life100'],
+                (96, 144)
+            )
+
+        elif(self.character.life_points <= 50 and self.character.life_points > 0):
+            surface.blit(
+                settings.GAME_TEXTURES['life50'],
+                (96, 144)
+            )
         
+        else:
+            surface.blit(
+                settings.GAME_TEXTURES['life0'],
+                (96, 144)
+            )
+
         # Texto del copy
         font = settings.FONTS['short-1']
         text_obj = font.render(f"{settings.COPY}", True, (0, 0, 0))
         text_rect = text_obj.get_rect()
-        text_rect.center = (60, 165)
+        text_rect.center = (72, 166)
         surface.blit(text_obj, text_rect)

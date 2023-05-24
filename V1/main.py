@@ -37,7 +37,7 @@ def run(env, agent: DYNAQ, selection_method, episodes):
 
 if __name__ == "__main__":
     environments = "Blocks-v0"
-    episodes = 100 if len(sys.argv) < 3 else int(sys.argv[2])
+    episodes = 1 if len(sys.argv) < 3 else int(sys.argv[2])
 
     env = gym.make(environments)
     agent = DYNAQ(

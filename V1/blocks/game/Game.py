@@ -13,6 +13,7 @@ class Game:
             pygame.init()
             pygame.display.init()
             pygame.mixer.music.play(loops=-1)
+            pygame.mixer.music.set_volume(0.2)
             w, h = self.scene.tile_map.width, self.scene.tile_map.height
 
             self.render_surface = pygame.Surface((w, h))
@@ -31,15 +32,12 @@ class Game:
         win = self.scene.check_win()
         if(loses):
             print('YOU LOST: Better luck in the next time!')
-            settings.SOUNDS['lose'].play()
-            # time.sleep(4)
+            # settings.SOUNDS['lose'].play()
             # time.sleep(8)
-            #self.soundClose()
             return new_state, loses
         else:
-            settings.SOUNDS['win'].play()
+            # settings.SOUNDS['win'].play()
             # time.sleep(8)
-            #self.soundClose()
             return new_state, win
 
     def render(self):
@@ -62,9 +60,6 @@ class Game:
             return
         
         pygame.display.quit()
-        pygame.quit()
-
-    def soundClose(self):
-        time.sleep(4)
         pygame.mixer.music.stop()
         pygame.mixer.quit()
+        pygame.quit()

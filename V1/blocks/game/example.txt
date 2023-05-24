@@ -5,12 +5,12 @@ S S I I S I S I S
 S S I S S I S I S
 S I S I I S I I S
 S S S I I S S I S
-S S I I I I I I S
+I I I I I I I I S
 S S I I I I S I S
 S S S S S S S S S
 7 6
 7 2
 5 3
 3 2
-4 3
-6 2
+4 4
+6 0

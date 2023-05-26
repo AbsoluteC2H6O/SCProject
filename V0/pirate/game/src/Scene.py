@@ -6,7 +6,7 @@ from .Tilemap import Tile, TileMap, TILE_TEXTURE_DEF
 from .Bomb import Bomb
 
 class Scene:
-    def __init__(self):
+    def __init__(self,render_mode):
         self.tile_map = None
         self.character = None
         self.box1 = None
@@ -16,6 +16,7 @@ class Scene:
         self.bomb1IsExploded = False
         self.bomb2IsExploded = False
         self.target = None
+        self.render_mode = render_mode
         self.__load_environment()
 
         self.actions_map = [
@@ -156,11 +157,13 @@ class Scene:
         if(bomb1Explodes):
             self.bomb1IsExploded = True
             self.bomb1.explosion()
-            settings.SOUNDS['explosion'].play()
+            if(self.render_mode is not None):
+                settings.SOUNDS['explosion'].play()
         if(bomb2Explodes):
             self.bomb2IsExploded = True
             self.bomb2.explosion()
-            settings.SOUNDS['explosion'].play()
+            if(self.render_mode is not None):
+                settings.SOUNDS['explosion'].play()
 
         if(explosion):
             self.character.get_explosion()

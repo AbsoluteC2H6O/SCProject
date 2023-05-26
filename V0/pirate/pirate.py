@@ -61,9 +61,6 @@ class PiratesEnv(gym.Env):
         elif terminated:
             self.current_reward = 0
 
-        # if(self.game.scene.check_win):
-        #     self.current_reward = 1000
-        # # 1 Bomb was exploded
         if(self.game.scene.character.life_points == 50):
             self.current_reward = -30
 

@@ -1,12 +1,12 @@
 import pygame
 from . import settings
 from .src.Scene import Scene
-
+import time
 class Game:
     def __init__(self, title, render_mode):
         self.render_mode = render_mode
 
-        self.scene = Scene()
+        self.scene = Scene(render_mode)
 
         if self.render_mode is not None:
             pygame.init()
@@ -28,16 +28,18 @@ class Game:
     def update(self, action):
         new_state = self.scene.apply_action(action)
         loses = self.scene.check_loses()
-        win = self.scene.check_win()
+        win = self.scene.check_win() 
 
         if(loses == True):
-            print('YOU LOST: Better luck in the next time!')
-            settings.SOUNDS['lose'].play()
+            if(self.render_mode is not None):
+                settings.SOUNDS['lose'].play()
+                time.sleep(4)
             return new_state, loses
         
         if(win == True):
-            print('You Win!')
-            settings.SOUNDS['win'].play()
+            if(self.render_mode is not None):
+                settings.SOUNDS['win'].play()
+                time.sleep(4)
             return new_state, win
         else:
             return new_state, win

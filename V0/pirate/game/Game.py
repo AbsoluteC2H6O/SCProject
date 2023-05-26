@@ -1,7 +1,6 @@
 import pygame
 from . import settings
 from .src.Scene import Scene
-import time
 
 class Game:
     def __init__(self, title, render_mode):
@@ -30,18 +29,15 @@ class Game:
         new_state = self.scene.apply_action(action)
         loses = self.scene.check_loses()
         win = self.scene.check_win()
-        if(loses):
+
+        if(loses == True):
             print('YOU LOST: Better luck in the next time!')
             settings.SOUNDS['lose'].play()
-            # time.sleep(4)
-            # time.sleep(8)
-            #self.soundClose()
             return new_state, loses
-        if(win):
-            print('entro aqui')
+        
+        if(win == True):
+            print('You Win!')
             settings.SOUNDS['win'].play()
-            # time.sleep(2)
-            #self.soundClose()
             return new_state, win
         else:
             return new_state, win
@@ -67,5 +63,3 @@ class Game:
         
         pygame.display.quit()
         pygame.mixer.music.stop()
-        # pygame.mixer.quit()
-        # pygame.quit()

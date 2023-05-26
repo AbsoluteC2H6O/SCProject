@@ -1,25 +1,22 @@
 import time
-
 import numpy as np
-
 import gym
 from gym import spaces
 
 from .game.Game import Game
 
 
-class BlocksEnv(gym.Env):
+class PiratesEnv(gym.Env):
     metadata = {"render_modes": ["human"], "render_fps": 4}
 
     def __init__(self, **kwargs):
         super().__init__()
         self.render_mode = kwargs.get("render_mode")
-        self.game = Game("Blocks Puzzle Env", self.render_mode)
+        self.game = Game("Pirates Puzzle Env", self.render_mode)
         self.n = self.game.scene.tile_map.rows * self.game.scene.tile_map.cols
         self.num_directions = 4
         self.observation_space = spaces.Discrete(
-            self.n * (self.n - 1) * (self.n - 2) * self.num_directions 
-            # + 3
+            self.n * (self.n - 3) * (self.n - 4) * self.num_directions *2
         )
         self.action_space = spaces.Discrete(5)
         self.current_state = self.game.get_state()
@@ -28,18 +25,11 @@ class BlocksEnv(gym.Env):
         self.delay = 1
 
     def __compute_state_result(self, d, mc, s1, s2):
-        bombPoints = 0
-        if(self.game.scene.character.life_points == 50):
-            bombPoints = 1
-        elif(self.game.scene.character.life_points == 0):
-            bombPoints = 2
-            
         return (
             d * self.n * (self.n - 1) * (self.n - 2)
             + mc * (self.n - 1) * (self.n - 2)
             + s1 * (self.n - 2)
             + s2 
-            # + bombPoints
         )
 
     def reset(self, seed=None, options=None):

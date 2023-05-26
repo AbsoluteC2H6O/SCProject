@@ -134,8 +134,7 @@ class Scene:
         b2 = TileMap.to_map(self.box2.x, self.box2.y)
 
         win = self.target in (b1, b2)
-        if(win == True):
-            print('YOU WIN, you are the best!')
+ 
         return win
     
     def check_loses(self):
@@ -167,10 +166,6 @@ class Scene:
             self.character.get_explosion()
 
         isDead = self.character.life_points == 0
-
-        # if(explosion):
-            # print('explosion', explosion, 'isDead', isDead)
-            # print('life points', self.character.life_points)
 
         if(explosion and isDead):
             print("GAME OVER, your life points was reduced to cero!")
@@ -211,11 +206,6 @@ class Scene:
 
         # Renderizado de la vida del pirata
         if(self.character.life_points > 50):
-            # font = settings.FONTS['short']
-            # text_obj = font.render(f"{self.character.life_points}", True, (0, 0, 0))
-            # text_rect = text_obj.get_rect()
-            # text_rect.center = (60, 150)
-            # surface.blit(text_obj, text_rect)
             surface.blit(
                 settings.GAME_TEXTURES['life100'],
                 (96, 144)

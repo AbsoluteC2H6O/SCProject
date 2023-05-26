@@ -1,69 +1,73 @@
 import numpy as np
-class MonteCarlo:
-    def __init__(self, states_n, actions_n, gamma, epsilon):
+
+
+class DYNAQ:
+    def __init__(self, states_n, actions_n, alpha, gamma, epsilon):
         self.states_n = states_n
         self.actions_n = actions_n
+        self.alpha = alpha
         self.gamma = gamma
         self.epsilon = epsilon
         self.reset()
 
     def reset(self):
-        self.episode = [] # número de episodios
-        self.q = np.zeros((self.states_n, self.actions_n)) # valorar cada par estado-acción
-        self.pi = np.full((self.states_n, self.actions_n), 1 / self.actions_n) # recibe un estado y retorna una acción, determina que acción seguir
-        self.returns = np.zeros((self.states_n, self.actions_n)) # acumular los promedios
-        self.returns_n = np.zeros((self.states_n, self.actions_n)) # acumula el numero de iter
+        self.episode = 0
+        self.step = 0
+        self.state = 0
+        self.action = 0
+        self.next_state = 0
+        self.reward = 0
+        self.q_table = np.zeros((self.states_n, self.actions_n))
+        self.model = {}
+        self.visited_states = {}
 
-    def update(self, state, action, reward, terminated):
-        self.episode.append((state, action, reward))
-        if terminated == True:
-            self._update_q()
-            self._update_pi()
-            self.episode = []
+    def start_episode(self):
+        self.episode += 1
+        self.step = 0
 
-    def _update_q(self):
-        states_actions = []
-        [
-            states_actions.append((state, action))
-            for state, action, _ in self.episode
-            if (state, action) not in states_actions
-        ]
-        for state, action in states_actions:
-            first_occurence = next(
-                i
-                for i, step in enumerate(self.episode)
-                if step[0] == state and step[1] == action
+    def update_q(self, state, action, next_state, reward):
+        self._update(state, action, next_state, reward)
+        self.q_table[state, action] = self.q_table[state, action] + self.alpha * (
+            reward
+            + self.gamma * np.max(self.q_table[next_state])
+            - self.q_table[state, action]
+        )
+
+    def update_model(self, state, action, reward, next_state):
+        self.model[(state, action)] = (reward, next_state)
+        if state in self.visited_states:
+            if action not in self.visited_states[state]:
+                self.visited_states[state].append(action)
+        else:
+            self.visited_states[state] = [action]
+
+    def _update(self, state, action, next_state, reward):
+        self.step += 1
+        self.state = state
+        self.action = action
+        self.next_state = next_state
+        self.reward = reward
+
+    def get_action(self, state, mode):
+        if mode == "random":
+            return np.random.choice(self.actions_n)
+        elif mode == "greedy":
+            return np.argmax(self.q_table[state])
+        elif mode == "epsilon-greedy":
+            if np.random.uniform(0, 1) < self.epsilon:
+                return np.random.choice(self.actions_n)
+            else:
+                return np.argmax(self.q_table[state])
+
+    def render(self, mode="step"):
+        if mode == "step":
+            print(
+                f"Episode: {self.episode}, Step: {self.step}, State: {self.state}, ",
+                end="",
             )
-            G = sum(
-                [
-                    step[2] * (self.gamma**i)
-                    for i, step in enumerate(self.episode[first_occurence:])
-                ]
-            )
-            self.returns[state][action] += G
-            self.returns_n[state][action] += 1
-            self.q[state][action] = (
-                self.returns[state][action] / self.returns_n[state][action]
+            print(
+                f"Action: {self.action}, Next state: {self.next_state}, Reward: {self.reward}"
             )
 
-    def _update_pi(self):
-        states = []
-        [states.append(state) for state, _, _ in self.episode if state not in states]
-        for state in states:
-            best_action = np.argmax(self.q[state])
-            for action in range(self.actions_n):
-                if action == best_action:
-                    self.pi[state][action] = (
-                        1 - self.epsilon + (self.epsilon / self.actions_n)
-                    )
-                else:
-                    self.pi[state][action] = self.epsilon / self.actions_n
-
-    def get_action(self, state):
-        return np.random.choice(self.actions_n, p=self.pi[state])
-
-    def get_best_action(self, state):
-        return np.argmax(self.q[state])
-
-    def render(self):
-        print(f"Values: {self.q}\nPolicy: {self.pi}")
+        elif mode == "values":
+            print(f"Q-Table: {self.q_table}")

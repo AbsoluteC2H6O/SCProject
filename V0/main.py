@@ -17,8 +17,8 @@ if "SDL_AUDIODRIVER" in os.environ:
 
 def run(env, agent: DYNAQ, selection_method, episodes):
     for episode in range(episodes):
-        if episode > 0:
-            print(f"Episode: {episode+1}")
+        if episode % 100 == 0:
+            print("Episode {} of {}.".format(episode, episodes))
         observation, _ = env.reset()
         agent.start_episode()
         terminated, truncated = False, False
@@ -36,13 +36,13 @@ def run(env, agent: DYNAQ, selection_method, episodes):
                 reward, next_state = agent.model[(state, action)]
                 agent.update_q(state, action, next_state, reward)
                 rewardTotal = reward
-            print('reward', rewardTotal)
+            # print('reward', rewardTotal)
 
 
 
 if __name__ == "__main__":
     environments = "Pirate-Ship-v0"
-    episodes = 10 if len(sys.argv) < 3 else int(sys.argv[2])
+    episodes = 1500 if len(sys.argv) < 3 else int(sys.argv[2])
 
     env = gym.make(environments)
     agent = DYNAQ(

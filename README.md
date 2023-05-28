@@ -65,5 +65,8 @@ In total there will be around **3.891.888** possible observations.
 ### Arguments
 gym.make("Pirate-Ship-v0")
 
+### Video Demo
+YouTube: https://youtu.be/qbmOHc5kCQQ
+
 ## V1
 Version 1 of environment

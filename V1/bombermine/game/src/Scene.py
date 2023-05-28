@@ -70,33 +70,30 @@ class Scene:
     def move_right(self, action):
         ch_x = (self.character.x//16)+1
         ch_y = (self.character.y//16)
-        print('ch_x',ch_x, ch_y)
-        if(self.tile_map.map[ch_x][ch_y] == 'I'):
-            self.character.move_right(action)
+        if(ch_y<9 and ch_x<9):
+            if(self.tile_map.map[ch_y][ch_x] == 'I'):
+                self.character.move_right(action)
 
     def move_left(self, action):
         ch_x = (self.character.x//16)-1
         ch_y = (self.character.y//16)
-        print('ch_x',ch_x, ch_y)
-
-        if(self.tile_map.map[ch_x][ch_y] == 'I'):
-            self.character.move_left(action)
+        if(ch_y<9 and ch_x<9):
+            if(self.tile_map.map[ch_y][ch_x] == 'I'):
+                self.character.move_left(action)
 
     def move_up(self, action):
         ch_x = self.character.x//16
         ch_y = (self.character.y//16) -1
-        print('ch_x',ch_x, ch_y)
-
-        if(self.tile_map.map[ch_x][ch_y] == 'I'):
-            self.character.move_up(action)
+        if(ch_y<9 and ch_x<9):
+            if(self.tile_map.map[ch_y][ch_x] == 'I' ):
+                self.character.move_up(action)
 
     def move_down(self, action):
         ch_x = (self.character.x//16)
         ch_y = (self.character.y//16)+1
-        print('ch_x',ch_x, ch_y)
-
-        if(self.tile_map.map[ch_x][ch_y] == 'I'):
-            self.character.move_down(action)
+        if(ch_y<9 and ch_x<9):
+            if(self.tile_map.map[ch_y][ch_x] == 'I'):
+                self.character.move_down(action)
 
     def putBomb(self, action):
         self.moves_number+=1

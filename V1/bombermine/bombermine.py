@@ -16,7 +16,7 @@ class BomberMineEnv(gym.Env):
         self.n = self.game.scene.tile_map.rows * self.game.scene.tile_map.cols
         self.num_directions = 4
         self.observation_space = spaces.Discrete(
-            self.n * (self.n - 3) * (self.n - 4) * self.num_directions *2
+            self.n  * self.num_directions *2
         )
         self.action_space = spaces.Discrete(5)
         self.current_state = self.game.get_state()
@@ -24,12 +24,11 @@ class BomberMineEnv(gym.Env):
         self.current_reward = 0.0
         self.delay = 1
 
-    def __compute_state_result(self, d, mc, s1, s2):
+    def __compute_state_result(self, d, mc):
         return (
-            d * self.n * (self.n - 1) * (self.n - 2)
-            + mc * (self.n - 1) * (self.n - 2)
-            + s1 * (self.n - 2)
-            + s2 
+            d * self.n 
+            + mc 
+          
         )
 
     def reset(self, seed=None, options=None):

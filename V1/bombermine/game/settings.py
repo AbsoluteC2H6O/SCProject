@@ -53,7 +53,7 @@ FONTS = {
     'short-1': pygame.font.Font(BASE_DIR  / "fonts" / "Bangers-Regular.ttf", 10)
 }
 
-COPY = "The Pirate Treasure - By: Abe & Alfredo"
+COPY = "Bombermine Treasure - By: Abe & Alfredo"
 LIFE_POINTS = "Life points"
 LOST = "¡LOST GAME!"
 

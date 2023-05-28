@@ -8,7 +8,7 @@ These environments have the purpose of completing the project assigned in the su
 2. Install requirements.
 3. Go to V0 / V1 folder.
 4. Execute main file to solve the respectiv puzzle.
-
+-----------------------------
 ## V0: The Pirate Ship
 Version 0 of environment.
 
@@ -68,5 +68,43 @@ gym.make("Pirate-Ship-v0")
 ### Video Demo
 YouTube: https://youtu.be/qbmOHc5kCQQ
 
-## V1
-Version 1 of environment
+---
+
+## V1: Bombermine Treasure
+Version 1 of environment.
+
+- Action Space = Discrete(4)
+- Observation Space = Discrete(324)
+- Import = gym.make("BomberMine-V1")
+
+### Description
+A prince is lost and wants to return to his castle, all he has are bombs to unlock it and reach the door of his castle.
+
+**Map**:
+```
+9 9
+S S S S S S S S S
+S S S S S S S S S
+S S S S S S S S S
+S S S S S S S S S
+S S S S S S S S S
+S S S S S S S S S
+S S S S S S I S S
+S S S S S I I I S
+S S S S S I I I S
+7 6 = Character
+3 2 = Goal
+```
+### Actions Agent
+There are 5 discrete deterministic actions:
+- 0: Move left.
+- 1: Move down.
+- 2: Move right.
+- 3: Move up.
+- 4: Put boom.
+### Rewards
+- -1 any move.
+- -10 there is no movement, it stays in the same place.
+- 0 if you have finished the game.
+- -30 if a bomb has exploded.
+- -100 if the second bomb has exploded.

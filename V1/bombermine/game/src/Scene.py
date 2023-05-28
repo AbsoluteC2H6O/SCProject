@@ -8,6 +8,7 @@ class Scene:
         self.tile_map = None
         self.character = None
         self.bomb1 = None
+        self.bomb1_counter = 0
         self.bomb1IsExploded = False
         self.target = None
         self.render_mode = render_mode
@@ -97,7 +98,11 @@ class Scene:
 
     def putBomb(self, action):
         self.moves_number+=1
-        # print('put bomb', action)
+        x = int(self.character.x)
+        y = int(self.character.y)
+        self.bomb1 = Bomb(x, y, self)
+        self.bomb1_counter = 1
+        print('put bomb', self.bomb1)
 
     def check_win(self):
         ch = TileMap.to_map(self.character.x, self.character.y)
@@ -115,11 +120,37 @@ class Scene:
         else:
             return False
         
+    def broke_metal(self, x, y):
+        to_i = y//16
+        to_j = x//16
+        if(to_i +1 <9):
+            self.tile_map.map[to_i+1][to_j] = 'I'
+            # self.tile_map.tiles[to_i+1][to_j +1] = Tile(x, y, 'I', 0)
+        if(to_i -1 >=0):
+            self.tile_map.map[to_i-1][to_j] = 'I'
+            # self.tile_map.tiles[to_i-1][to_j] = Tile(x, y, 'I', 0)
+        if(to_j -1 >=0):
+            self.tile_map.map[to_i][to_j-1] = 'I'
+            # self.tile_map.tiles[to_i][to_j -1] = Tile(x, y, 'I', 0)
+        if(to_j +1 <9):
+            self.tile_map.map[to_i][to_j +1] = 'I'
+            # self.tile_map.tiles[to_i][to_j +1] = Tile(x, y, 'I', 0)
 
     def render(self, surface):
+        # ch = TileMap.to_map(self.character.x, self.character.y)
         self.tile_map.render(surface)
         surface.blit(settings.GAME_TEXTURES["switch"], TileMap.to_screen(*self.target))
         self.character.render(surface)
+        if(self.bomb1 != None):
+            self.bomb1.render(surface)
+        
+        self.bomb1_counter+=1
+
+        if(self.bomb1_counter == 5 and self.bomb1!= None):
+            x_bomb = self.bomb1.x
+            y_bomb = self.bomb1.y
+            self.bomb1 = None
+            self.broke_metal(x_bomb,y_bomb)
 
         # Fondo del texto
         for _ in range(9):
